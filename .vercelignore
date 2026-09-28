@@ -1,0 +1,5 @@
+out/
+portfolio/
+README.md
+RELEASE-MANIFEST.json
+next-env.d.ts

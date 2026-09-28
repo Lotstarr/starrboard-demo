@@ -1,5 +1,5 @@
 {
-  "framework": "nextjs",
+  "framework": null,
   "buildCommand": "npm run build",
   "outputDirectory": "out",
   "headers": [
@@ -24,5 +24,6 @@
         }
       ]
     }
-  ]
+  ],
+  "installCommand": "npm ci"
 }
