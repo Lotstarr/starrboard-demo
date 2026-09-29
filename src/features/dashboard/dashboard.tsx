@@ -16,6 +16,8 @@ import { useWorkspace } from "./store";
 import { widgetIcons } from "./icons";
 import { SchoolState, SchoolWidget } from "./school";
 import { WidgetGrid } from "./widget-grid";
+import { DayCalendar } from "../calendar/day-view";
+import { DemoTaskCheck } from "./task-controls";
 
 function OverviewCard({ id }: { id: AreaId }) {
   const { tasks, setDrawer, scenario } = useWorkspace();
@@ -33,15 +35,18 @@ function OverviewCard({ id }: { id: AreaId }) {
         )}
       </div>
       {(open.length ? open : records).slice(0, 2).map((task) => (
-        <div className="overview-row" key={task.id}>
-          <button onClick={() => setDrawer({ kind: "task", id: task.id })}>
-            {task.title}
-          </button>
-          <small className={task.attention ? "warning" : ""}>
-            {task.course && `${task.course} · `}
-            {task.due}
-            {task.done ? " · Locally complete" : ""}
-          </small>
+        <div className="overview-row task-overview-row" key={task.id}>
+          <DemoTaskCheck task={task} />
+          <div>
+            <button onClick={() => setDrawer({ kind: "task", id: task.id })}>
+              {task.title}
+            </button>
+            <small className={task.attention ? "warning" : ""}>
+              {task.course && `${task.course} · `}
+              {task.due}
+              {task.done ? " · Locally complete" : ""}
+            </small>
+          </div>
         </div>
       ))}
     </>
@@ -91,7 +96,7 @@ function OverviewCard({ id }: { id: AreaId }) {
   );
 }
 
-export function ScheduleCard({ compact = false }: { compact?: boolean }) {
+export function ScheduleCard() {
   const { setDrawer } = useWorkspace();
   return (
     <>
@@ -103,22 +108,18 @@ export function ScheduleCard({ compact = false }: { compact?: boolean }) {
         <span className="small">MDT · demo</span>
       </div>
       <div className="widget-body">
-        <div className="timeline">
-          {schedule
-            .filter((event) => !compact || event.time !== "12:00")
-            .map((event) => (
-              <div
-                className={`time-block ${event.free ? "available" : ""}`}
-                key={event.time}
-              >
-                <span>{event.time}</span>
-                <div>
-                  {event.title}
-                  <p>{event.detail}</p>
-                </div>
-              </div>
-            ))}
-        </div>
+        <DayCalendar
+          dayLabel="Monday, September 21"
+          events={schedule.map((event) => ({
+            ...event,
+            id: `${event.start}:${event.title}`,
+            timeLabel: new Date(2000, 0, 1, 0, event.start).toLocaleTimeString(
+              "en-US",
+              { hour: "numeric", minute: "2-digit" },
+            ),
+          }))}
+          zoneLabel="MT"
+        />
         <p className="schedule-caveat">
           Work calendar not connected. Availability may be incomplete.
         </p>
@@ -167,7 +168,7 @@ export function Dashboard({ page }: { page: DashboardPage }) {
     (task) => task.attention === "Due today" && !task.done,
   ).length;
   function render(id: WidgetId, editing: boolean) {
-    if (id === "schedule") return <ScheduleCard compact={page === "home"} />;
+    if (id === "schedule") return <ScheduleCard />;
     if (id === "recommendation") return <Recommendation />;
     if (page === "today" && id === "school")
       return (

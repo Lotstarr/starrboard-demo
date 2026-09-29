@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   ArrowUpRight,
   BookOpen,
-  Check,
   CircleAlert,
   GraduationCap,
   Maximize2,
@@ -14,6 +13,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { useWorkspace } from "./store";
+import { DemoTaskCheck } from "./task-controls";
 import { sources } from "./fixtures";
 import {
   courses,
@@ -92,18 +92,12 @@ export function TaskRows({
   const { setDrawer } = useWorkspace();
   return (
     <div className="task-list">
-      {tasks.map((task, index) => (
+      {tasks.map((task) => (
         <div
           className={`task-row ${task.done ? "task-done" : ""}`}
           key={task.id}
         >
-          <span className="task-rank" aria-hidden="true">
-            {task.done ? (
-              <Check size={16} />
-            ) : (
-              String(index + 1).padStart(2, "0")
-            )}
-          </span>
+          <DemoTaskCheck task={task} />
           <div className="task-main">
             <button
               className="task-title"

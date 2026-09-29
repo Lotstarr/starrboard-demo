@@ -26,6 +26,7 @@ import {
 import { sources } from "./fixtures";
 import { SourceCards } from "./school";
 import { Navigation } from "./shell";
+import { DemoTaskCheck } from "./task-controls";
 
 function TaskDetail({ task }: { task: DemoTask }) {
   const { updateTask, announce, scenario } = useWorkspace();
@@ -142,7 +143,7 @@ function TaskDetail({ task }: { task: DemoTask }) {
 }
 
 function AreaDetail({ id }: { id: AreaId }) {
-  const { tasks, updateTask, setDrawer, announce } = useWorkspace();
+  const { tasks, setDrawer } = useWorkspace();
   const area = areas.find((value) => value.id === id)!;
   return (
     <>
@@ -160,15 +161,7 @@ function AreaDetail({ id }: { id: AreaId }) {
           .filter((task) => task.area === id)
           .map((task) => (
             <div className="area-task" key={task.id}>
-              <input
-                type="checkbox"
-                aria-label={`Mark ${task.title} locally complete`}
-                checked={task.done}
-                onChange={(event) => {
-                  updateTask(task.id, { done: event.target.checked });
-                  announce("Local demo progress updated.");
-                }}
-              />
+              <DemoTaskCheck task={task} />
               <div>
                 <button
                   className={`task-title ${task.done ? "completed-title" : ""}`}

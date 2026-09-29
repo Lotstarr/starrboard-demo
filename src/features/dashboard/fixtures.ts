@@ -171,25 +171,29 @@ export const initialTasks: DemoTask[] = [
 
 export const schedule = [
   {
-    time: "10:00",
+    start: 10 * 60,
+    end: 11 * 60,
     title: "Core class",
     detail: "School calendar · 60 min",
     free: false,
   },
   {
-    time: "12:00",
+    start: 12 * 60,
+    end: 13 * 60,
     title: "Lunch & reset",
     detail: "Personal calendar · 60 min",
     free: false,
   },
   {
-    time: "13:00",
+    start: 13 * 60,
+    end: 15 * 60,
     title: "Available · 2 hours",
     detail: "School + personal calendars only",
     free: true,
   },
   {
-    time: "16:00",
+    start: 16 * 60,
+    end: 16 * 60 + 30,
     title: "Project check-in",
     detail: "School calendar · 30 min",
     free: false,
