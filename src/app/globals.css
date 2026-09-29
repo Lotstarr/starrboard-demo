@@ -2561,6 +2561,7 @@ input[type="checkbox"] {
 .calendar-time-block.is-free {
   background: var(--sb-surface);
   border: 1px dashed var(--sb-secondary-text);
+  color: var(--sb-text);
 }
 .calendar-now-line {
   position: absolute;
