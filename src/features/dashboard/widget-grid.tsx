@@ -62,6 +62,15 @@ const titleOf = (id: WidgetId) =>
   schoolTitles[id] ??
   areas.find((area) => area.id === id)?.title ??
   (id === "schedule" ? "Schedule" : "Recommendation");
+const canvasLabels: Record<DashboardPage, string> = {
+  home: "YOUR WORKSPACES",
+  today: "TODAY'S PLAN",
+  school: "YOUR SCHOOL WIDGETS",
+  ta: "YOUR TA WIDGETS",
+  career: "YOUR CAREER WIDGETS",
+  projects: "YOUR PROJECT WIDGETS",
+  automations: "YOUR AUTOMATION WIDGETS",
+};
 type Gesture = {
   id: WidgetId;
   kind: "move" | "resize";
@@ -292,13 +301,7 @@ export function LayoutCanvas({
           </>
         ) : (
           <>
-            <span className="small muted">
-              {page === "school"
-                ? "YOUR SCHOOL WIDGETS"
-                : page === "home"
-                  ? "YOUR WORKSPACES"
-                  : "YOUR DAILY CANVAS"}
-            </span>
+            <span className="small muted">{canvasLabels[page]}</span>
             <button
               className="button quiet"
               onClick={() => {

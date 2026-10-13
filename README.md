@@ -21,4 +21,3 @@ The separately operated private application includes dual Canvas imports, custom
 Next.js, React, TypeScript, and shared design tokens power the interface. The private application separates imported facts from user planning and enforces ownership through server checks and PostgreSQL row-level security. The demo is exported from a source allowlist: private routes, server actions, secrets, database migrations, and Git history are excluded entirely.
 
 See `portfolio/CASE_STUDY.md` for architecture and the demonstration plan. Published with owner approval. All records are fictional. No open-source license has been selected.
-

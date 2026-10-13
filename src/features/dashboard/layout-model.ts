@@ -27,11 +27,13 @@ export const defaultLayouts: Record<DashboardPage, WidgetLayout[]> = {
     { id: "ta-followups", columns: 8, height: 360 },
     { id: "ta-resources", columns: 4, height: 360 },
   ],
-  home: ["school", "ta", "career", "projects", "schedule"].map((id) => ({
-    id: id as WidgetId,
-    columns: 4,
-    height: 280,
-  })),
+  home: [
+    { id: "school", columns: 4, height: 280 },
+    { id: "ta", columns: 4, height: 280 },
+    { id: "career", columns: 4, height: 280 },
+    { id: "projects", columns: 4, height: 520 },
+    { id: "schedule", columns: 8, height: 520 },
+  ],
   school: [
     { id: "school-progress", columns: 12, height: 200 },
     { id: "school-coursework", columns: 8, height: 580 },
@@ -40,8 +42,8 @@ export const defaultLayouts: Record<DashboardPage, WidgetLayout[]> = {
     { id: "school-week", columns: 4, height: 400 },
   ],
   today: [
-    { id: "school", columns: 8, height: 400 },
-    { id: "schedule", columns: 4, height: 400 },
+    { id: "school", columns: 7, height: 440 },
+    { id: "schedule", columns: 5, height: 440 },
     { id: "recommendation", columns: 12, height: 160 },
   ],
 };
@@ -99,6 +101,23 @@ export function parseLayout(
     if (page === "home" && Array.isArray(value))
       value = value.filter((item) => item?.id !== "work");
     if (!Array.isArray(value) || value.length !== fallback.length)
+      return fallback;
+    // Upgrade untouched layouts from before the calendar became a day grid.
+    // User-customized layouts continue to round-trip unchanged.
+    if (
+      page === "home" &&
+      value.every((item) => item?.columns === 4 && item?.height === 280)
+    )
+      return fallback;
+    if (
+      page === "today" &&
+      value[0]?.id === "school" &&
+      value[0]?.columns === 8 &&
+      value[0]?.height === 400 &&
+      value[1]?.id === "schedule" &&
+      value[1]?.columns === 4 &&
+      value[1]?.height === 400
+    )
       return fallback;
     const seen = new Set<string>();
     for (const item of value) {
