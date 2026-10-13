@@ -143,7 +143,12 @@ export function parseLayout(
         return fallback;
       seen.add(item.id);
     }
-    return value.map(({ id, columns, height }) => ({ id, columns, height }));
+    return value.map(({ id, columns, height }) => ({
+      id,
+      columns:
+        page === "home" && id === "schedule" ? Math.max(8, columns) : columns,
+      height,
+    }));
   } catch {
     return fallback;
   }

@@ -153,8 +153,11 @@ export function LayoutCanvas({
     setMessage(`${titleOf(id)} moved to position ${to + 1}.`);
   }
   function resize(id: WidgetId, columns: number, height: number) {
+    const minimumColumns = page === "home" && id === "schedule" ? 8 : 4;
     setDraft((current) =>
-      current ? resizeWidget(current, id, columns, height) : current,
+      current
+        ? resizeWidget(current, id, Math.max(minimumColumns, columns), height)
+        : current,
     );
     setMessage(`${titleOf(id)} size updated.`);
   }
@@ -199,7 +202,16 @@ export function LayoutCanvas({
       const columns =
         active.columns + Math.round((event.clientX - active.x) / active.step);
       const height = active.height + event.clientY - active.y;
-      setDraft(resizeWidget(active.before, active.id, columns, height));
+      setDraft(
+        resizeWidget(
+          active.before,
+          active.id,
+          page === "home" && active.id === "schedule"
+            ? Math.max(8, columns)
+            : columns,
+          height,
+        ),
+      );
     } else {
       const target = document
         .elementsFromPoint(event.clientX, event.clientY)
@@ -402,7 +414,10 @@ export function LayoutCanvas({
                 <button
                   className="icon-button"
                   aria-label={`Make ${titleOf(item.id)} narrower`}
-                  disabled={item.columns === 4}
+                  disabled={
+                    item.columns ===
+                    (page === "home" && item.id === "schedule" ? 8 : 4)
+                  }
                   onClick={() => resize(item.id, item.columns - 1, item.height)}
                 >
                   <Minus size={14} />
